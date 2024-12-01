@@ -7,6 +7,87 @@
 #define SPI_CS_PIN 10
 #define FPGA_RESET_PIN 9
 
+#define CMD_STATUS 0xFA
+#define CMD_READ   0xFB
+#define CMD_WRITE  0xFC
+
+#define ACK        0xAA
+#define NACK       0xBB
+#define EMPTY_BYTE 0xFE
+#define FULL_BYTE  0xFF
+
+void begin_spi()
+{
+    SPI.beginTransaction(SPISettings(SPI_SPEED, MSBFIRST, SPI_MODE0));
+    digitalWrite(SPI_CS_PIN, LOW);
+}
+
+void end_spi()
+{
+    digitalWrite(SPI_CS_PIN, HIGH);
+    SPI.endTransaction();
+}
+
+void test_status()
+{
+    begin_spi();
+    SPI.transfer(CMD_STATUS);
+    delay(10);
+    for (int i = 10; i <= 50; i += 10)
+    {
+        uint8_t bit_read = SPI.transfer(0);
+        Serial.print("Bit read: ");
+        Serial.println(bit_read, DEC);
+        delay(10); // 10ms
+    }
+    end_spi();
+
+    delay(5000); // 5s
+}
+
+void test_set_get()
+{
+    {
+        begin_spi();
+        SPI.transfer(CMD_WRITE);
+        delay(10);
+        uint8_t initial_bit_read = SPI.transfer(0);
+        Serial.print("Initial writing: 0x");
+        Serial.println(initial_bit_read, HEX);
+        delay(10);
+        for (int i = 10; i <= 40; i += 10)
+        {
+            uint8_t bit_read = SPI.transfer(i);
+            Serial.print("Writing: ");
+            Serial.println(bit_read, DEC);
+            delay(10); // 10ms
+        }
+        end_spi();
+    }
+
+    delay(1000);
+
+    {
+        begin_spi();
+        SPI.transfer(CMD_READ);
+        delay(10);
+        uint8_t initial_bit_read = SPI.transfer(0);
+        Serial.print("Initial reading: 0x");
+        Serial.println(initial_bit_read, HEX);
+        delay(10);
+        for (int i = 10; i <= 40; i += 10)
+        {
+            uint8_t bit_read = SPI.transfer(0);
+            Serial.print("Reading: ");
+            Serial.println(bit_read, DEC);
+            delay(10); // 10ms
+        }
+        end_spi();
+    }
+
+    delay(5000); // 5s
+}
+
 void setup()
 {
     pinMode(FPGA_RESET_PIN, OUTPUT);
@@ -33,20 +114,5 @@ void setup()
 
 void loop()
 {
-    for (int i = 10; i <= 250; i += 10)
-    {
-        SPI.beginTransaction(SPISettings(SPI_SPEED, MSBFIRST, SPI_MODE0));
-
-        digitalWrite(SPI_CS_PIN, LOW);
-        uint8_t bit_read = SPI.transfer(i);
-        digitalWrite(SPI_CS_PIN, HIGH);
-
-        SPI.endTransaction();
-        Serial.print("Bit read: ");
-        Serial.println(bit_read, DEC);
-
-        delay(10); // 10ms
-    }
-
-    delay(5000); // 5s
+    test_set_get();
 }
