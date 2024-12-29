@@ -89,15 +89,10 @@ void count_spi()
     end_spi();
 }
 
-// Set RST_PIN, then pulse SCLK_PIN
 void reset_spi()
 {
-    digitalWrite(SCLK_PIN, LOW);
-    delay(1); /* enough for any SPI_SPEED greater than 1kHz */
     digitalWrite(RST_PIN, HIGH);
-    digitalWrite(SCLK_PIN, HIGH);
-    delay(1); /* enough for any SPI_SPEED greater than 1kHz */
-    digitalWrite(SCLK_PIN, LOW);
+    delay(1);
     digitalWrite(RST_PIN, LOW);
 }
 
@@ -105,8 +100,11 @@ void setup()
 {
     // Initialize Arduino pins
     pinMode(RST_PIN, OUTPUT);
-    pinMode(CS_PIN, OUTPUT);
     pinMode(SCLK_PIN, OUTPUT);
+    pinMode(CS_PIN, OUTPUT);
+
+    digitalWrite(RST_PIN, LOW);
+    digitalWrite(SCLK_PIN, LOW);
     digitalWrite(CS_PIN, HIGH);
 
     // Wait until both Arduino and FPGA are plugged in, then reset the FPGA
