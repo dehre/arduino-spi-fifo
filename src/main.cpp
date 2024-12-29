@@ -119,7 +119,9 @@ void setup()
 void loop()
 {
     Serial.println("WRITING ALL, READING ALL!");
-    uint8_t data_full_1[] = {10, 20, 30, 40, 50, 60, 70};
+    uint8_t data_full_1[100];
+    for (size_t i = 0; i < sizeof(data_full_1); i++)
+        data_full_1[i] = (i + 1);
     write_spi(data_full_1, sizeof(data_full_1));
     delay(1000);
     read_spi(sizeof(data_full_1));
@@ -138,12 +140,13 @@ void loop()
     delay(1000);
 
     Serial.println("WRITING ALL, READING 1, READING ALL!");
-    uint8_t data_full_2[] = {7, 14, 21, 28, 35, 42};
-    write_spi(data_full_2, sizeof(data_full_2));
+    for (size_t i = 0; i < sizeof(data_full_1); i++)
+        data_full_1[i] = data_full_1[i] * 2;
+    write_spi(data_full_1, sizeof(data_full_1));
     delay(1000);
     read_spi(1);
     delay(1000);
-    read_spi(5);
+    read_spi(sizeof(data_full_1));
     delay(1000);
 
     delay(10000); // 10s
