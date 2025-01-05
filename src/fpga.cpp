@@ -145,7 +145,7 @@ static size_t print_cmd(uint8_t byte)
     switch (byte)
     {
     case CMD_COUNT:
-        return Serial.print("CMD_STATUS");
+        return Serial.print("CMD_COUNT");
     case CMD_WRITE:
         return Serial.print("CMD_WRITE");
     case CMD_READ:
