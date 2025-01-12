@@ -36,27 +36,21 @@ void setup()
 
 void loop()
 {
-    ExtSerial.printf("\nWriting 7 items, getting count, reading 7 items...\n");
-    uint8_t data_a[] = {10, 20, 30, 40, 50, 60, 70};
+    ExtSerial.printf("\nPush 50 items, Count, Pop 10 items...\n");
+    uint8_t data_a[50];
+    for (size_t i = 0; i < sizeof(data_a); ++i)
+        data_a[i] = 1 + i;
     fpga::write(data_a, sizeof(data_a));
     fpga::count();
-    fpga::read(sizeof(data_a));
+    fpga::read(10);
 
-    ExtSerial.printf("\nWriting 4 items, reading 3 items, writing 2 items, "
-                     "getting count, reading 3 items...\n");
-    uint8_t data_b[] = {3, 6, 9, 12};
+    ExtSerial.printf("\nPush 61 items, Count, Pop 100 items...\n");
+    uint8_t data_b[61];
+    for (size_t i = 0; i < sizeof(data_b); ++i)
+        data_b[i] = 51 + i;
     fpga::write(data_b, sizeof(data_b));
-    fpga::read(3);
-    uint8_t data_c[] = {73, 76};
-    fpga::write(data_c, sizeof(data_c));
     fpga::count();
-    fpga::read(3);
-
-    ExtSerial.printf("\nWriting 6 items, reading 1 item, reading 6 items\n");
-    uint8_t data_d[] = {7, 14, 21, 28, 35, 42};
-    fpga::write(data_d, sizeof(data_d));
-    fpga::read(1);
-    fpga::read(6);
+    fpga::read(100);
 
     delay(10000); /* 10s */
 }
