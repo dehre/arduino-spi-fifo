@@ -10,8 +10,8 @@
 #define CS_PIN 10
 #define RST_PIN 9
 
-/* SPI Speed at 5kHz */
-#define SPI_SPEED 5000
+/* SPI Speed at 2MHz */
+#define SPI_SPEED 2000000
 
 /* FPGA Commands */
 #define CMD_COUNT ((uint8_t)0xF0)
@@ -33,6 +33,7 @@ struct callbacks
     void (*on_count)(uint8_t sent, uint8_t recv);
     void (*on_write)(uint8_t sent, uint8_t recv);
     void (*on_read)(uint8_t sent, uint8_t recv);
+    void (*after_each)();
 };
 
 /*

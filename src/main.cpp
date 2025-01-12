@@ -21,50 +21,36 @@ void setup()
         },
         .on_read = [](uint8_t sent, uint8_t recv) {
             ExtSerial.printf("   RD: %d\n", recv);
+        },
+        .after_each = []() {
+            delay(1000); /* 1s */
         }
     });
     // clang-format on
 
-    // Wait until both the Arduino and the FPGA are plugged in...
-    delay(5000);
+    /* Wait until both the Arduino and the FPGA are plugged in... */
+    delay(5000); /* 5s */
 
     fpga::reset();
 }
 
 void loop()
 {
-    ExtSerial.printf("\nWriting 7 items, getting count, reading 7 items...\n");
-    uint8_t data_a[] = {10, 20, 30, 40, 50, 60, 70};
+    ExtSerial.printf("\nPush 50 items, Count, Pop 10 items...\n");
+    uint8_t data_a[50];
+    for (size_t i = 0; i < sizeof(data_a); ++i)
+        data_a[i] = 1 + i;
     fpga::write(data_a, sizeof(data_a));
-    delay(1000);
     fpga::count();
-    delay(1000);
-    fpga::read(sizeof(data_a));
-    delay(1000);
+    fpga::read(10);
 
-    ExtSerial.printf("\nWriting 4 items, reading 3 items, writing 2 items, "
-                     "getting count, reading 3 items...\n");
-    uint8_t data_b[] = {3, 6, 9, 12};
+    ExtSerial.printf("\nPush 60 items, Count, Pop 100 items...\n");
+    uint8_t data_b[60];
+    for (size_t i = 0; i < sizeof(data_b); ++i)
+        data_b[i] = 51 + i;
     fpga::write(data_b, sizeof(data_b));
-    delay(1000);
-    fpga::read(3);
-    delay(1000);
-    uint8_t data_c[] = {73, 76};
-    fpga::write(data_c, sizeof(data_c));
-    delay(1000);
     fpga::count();
-    delay(1000);
-    fpga::read(3);
-    delay(1000);
+    fpga::read(100);
 
-    ExtSerial.printf("\nWriting 6 items, reading 1 item, reading 6 items\n");
-    uint8_t data_d[] = {7, 14, 21, 28, 35, 42};
-    fpga::write(data_d, sizeof(data_d));
-    delay(1000);
-    fpga::read(1);
-    delay(1000);
-    fpga::read(6);
-    delay(1000);
-
-    delay(10000); // 10s
+    delay(10000); /* 10s */
 }

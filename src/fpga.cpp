@@ -7,7 +7,8 @@ static fpga::callbacks _callbacks = {
     .on_command = [](uint8_t sent, uint8_t recv) {},
     .on_count = [](uint8_t sent, uint8_t recv) {},
     .on_write = [](uint8_t sent, uint8_t recv) {},
-    .on_read = [](uint8_t sent, uint8_t recv) {}};
+    .on_read = [](uint8_t sent, uint8_t recv) {},
+    .after_each = []() {}};
 
 namespace fpga
 {
@@ -48,6 +49,7 @@ void count()
 
     digitalWrite(CS_PIN, HIGH);
     SPI.endTransaction();
+    _callbacks.after_each();
 }
 
 void write(uint8_t data[], size_t data_len)
@@ -67,6 +69,7 @@ void write(uint8_t data[], size_t data_len)
 
     digitalWrite(CS_PIN, HIGH);
     SPI.endTransaction();
+    _callbacks.after_each();
 }
 
 void read(size_t len)
@@ -86,6 +89,7 @@ void read(size_t len)
 
     digitalWrite(CS_PIN, HIGH);
     SPI.endTransaction();
+    _callbacks.after_each();
 }
 
 } // namespace fpga
