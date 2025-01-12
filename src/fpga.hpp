@@ -10,8 +10,8 @@
 #define CS_PIN 10
 #define RST_PIN 9
 
-/* SPI Speed at 5kHz */
-#define SPI_SPEED 5000
+/* SPI Speed at 2MHz */
+#define SPI_SPEED 2000000
 
 /* FPGA Commands */
 #define CMD_COUNT ((uint8_t)0xF0)
