@@ -33,6 +33,7 @@ struct callbacks
     void (*on_count)(uint8_t sent, uint8_t recv);
     void (*on_write)(uint8_t sent, uint8_t recv);
     void (*on_read)(uint8_t sent, uint8_t recv);
+    void (*after_each)();
 };
 
 /*
