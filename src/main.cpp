@@ -23,13 +23,13 @@ void setup()
             ExtSerial.printf("   RD: %d\n", recv);
         },
         .after_each = []() {
-            delay(1000);
+            delay(1000); /* 1s */
         }
     });
     // clang-format on
 
-    // Wait until both the Arduino and the FPGA are plugged in...
-    delay(5000);
+    /* Wait until both the Arduino and the FPGA are plugged in... */
+    delay(5000); /* 5s */
 
     fpga::reset();
 }
@@ -58,5 +58,5 @@ void loop()
     fpga::read(1);
     fpga::read(6);
 
-    delay(10000); // 10s
+    delay(10000); /* 10s */
 }
