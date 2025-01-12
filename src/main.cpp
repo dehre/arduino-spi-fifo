@@ -44,8 +44,8 @@ void loop()
     fpga::count();
     fpga::read(10);
 
-    ExtSerial.printf("\nPush 61 items, Count, Pop 100 items...\n");
-    uint8_t data_b[61];
+    ExtSerial.printf("\nPush 60 items, Count, Pop 100 items...\n");
+    uint8_t data_b[60];
     for (size_t i = 0; i < sizeof(data_b); ++i)
         data_b[i] = 51 + i;
     fpga::write(data_b, sizeof(data_b));
